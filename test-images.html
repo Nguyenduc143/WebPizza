@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .image-card {
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .image-card img {
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        .status {
+            padding: 0.5rem;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+        .status.ok {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        h1 {
+            color: #333;
+        }
+        .section-title {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #666;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍕 Test Hình Ảnh Pizza</h1>
+        <p>Kiểm tra xem các hình ảnh pizza có tồn tại không</p>
+
+        <div class="section-title">Pizza Images</div>
+        <div class="image-grid" id="pizzaGrid"></div>
+
+        <div class="section-title">Data Check</div>
+        <div id="dataCheck"></div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        function testImages() {
+            const pizzaImages = [
+                'pizza-1.jpg',
+                'pizza-2.jpg',
+                'pizza-3.jpg',
+                'pizza-4.jpg',
+                'pizza-5.jpg',
+                'pizza-6.jpg',
+                'pizza-7.jpg',
+                'pizza-8.jpg',
+                'about.jpg'
+            ];
+
+            const grid = document.getElementById('pizzaGrid');
+            
+            pizzaImages.forEach(img => {
+                const card = document.createElement('div');
+                card.className = 'image-card';
+                
+                const testImg = new Image();
+                let status = 'error';
+                let statusText = '❌ Không tìm thấy';
+                
+                testImg.onload = function() {
+                    status = 'ok';
+                    statusText = '✅ OK';
+                    card.querySelector('.status').className = 'status ok';
+                    card.querySelector('.status').textContent = statusText;
+                };
+                
+                testImg.onerror = function() {
+                    status = 'error';
+                    statusText = '❌ Lỗi';
+                    card.querySelector('.status').className = 'status error';
+                    card.querySelector('.status').textContent = statusText;
+                };
+                
+                testImg.src = 'assets/images/' + img;
+                
+                card.innerHTML = `
+                    <img src="assets/images/${img}" alt="${img}" style="display: block;">
+                    <strong>${img}</strong>
+                    <div class="status error">${statusText}</div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function checkData() {
+            const dataCheck = document.getElementById('dataCheck');
+            const products = getProducts();
+            const featured = products.filter(p => p.featured);
+
+            let html = `
+                <p><strong>Total Products:</strong> ${products.length}</p>
+                <p><strong>Featured Products:</strong> ${featured.length}</p>
+                <hr>
+                <h3>Featured Products:</h3>
+                <ul>
+            `;
+
+            featured.forEach(p => {
+                html += `
+                    <li>
+                        <strong>${p.name}</strong> - ${p.image}
+                        <br><small>${p.description}</small>
+                    </li>
+                `;
+            });
+
+            html += `</ul>`;
+            dataCheck.innerHTML = html;
+        }
+
+        window.addEventListener('load', function() {
+            testImages();
+            checkData();
+        });
+    </script>
+</body>
+</html>

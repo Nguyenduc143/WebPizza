@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Shop - Liên Hệ</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/contact.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" class="logo-link"><h1>🍕 Pizza Shop</h1></a>
+                </div>
+                <nav class="nav-menu">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li><a href="menu.html">Menu</a></li>
+                        <li><a href="cart.html">Giỏ Hàng <span class="cart-count" id="cartCount">0</span></a></li>
+                        <li><a href="contact.html" class="active">Liên Hệ</a></li>
+                        <li class="user-account">
+                            <a href="javascript:;" id="user-account-link">
+                                <span class="user-icon">👤</span>
+                                <span id="user-account-text">Đăng Nhập</span>
+                            </a>
+                            <ul class="user-dropdown" id="userDropdown" style="display: none;">
+                                <li id="admin-menu-item" style="display: none;">
+                                    <a href="admin.html">⚙️ Quản lý cửa hàng</a>
+                                </li>
+                                <li id="customer-menu-item">
+                                    <a href="customer.html">📋 Đơn hàng của tôi</a>
+                                </li>
+                                <li><a href="javascript:;" id="btn-logout">🚪 Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <div class="search-box" id="searchBox">
+                        <input type="text" id="searchInput" placeholder="Tìm kiếm pizza..." onkeyup="handleSearch(event)">
+                        <button onclick="performSearch()">Tìm</button>
+                    </div>
+                    <button class="search-btn" onclick="toggleSearch()">🔍</button>
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <h1 class="page-title">Liên Hệ Với Chúng Tôi</h1>
+            
+            <div class="contact-content">
+                <!-- Contact Form -->
+                <div class="contact-form-wrapper">
+                    <h2>Gửi Tin Nhắn</h2>
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Họ và Tên *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số Điện Thoại</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Tin Nhắn *</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Gửi Tin Nhắn</button>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <h2>Thông Tin Liên Hệ</h2>
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div class="info-text">
+                            <h3>Địa Chỉ</h3>
+                            <p>Mỹ Hào<br>Hưng Yên, Việt Nam</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <div class="info-text">
+                            <h3>Điện Thoại</h3>
+                            <p>0123 456 789<br>0987 654 321</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">✉️</div>
+                        <div class="info-text">
+                            <h3>Email</h3>
+                            <p>info@pizzashop.vn<br>support@pizzashop.vn</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🕒</div>
+                        <div class="info-text">
+                            <h3>Giờ Làm Việc</h3>
+                            <p>Thứ 2 - Chủ Nhật<br>10:00 AM - 11:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="map-container">
+                <h2>Vị Trí Cửa Hàng</h2>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.3243977922467!2d106.69746731533417!3d10.782826692318845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f4b3330bcc9%3A0xb7b8c6a6e6e6e6e6!2zUXXhuq1uIDEsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1234567890123!5m2!1svi!2s" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <h2>Câu Hỏi Thường Gặp</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Thời gian giao hàng là bao lâu?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Thời gian giao hàng trung bình là 30-45 phút tùy thuộc vào khoảng cách. Chúng tôi cam kết giao hàng nhanh nhất có thể để pizza của bạn vẫn còn nóng.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Có những hình thức thanh toán nào?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Chúng tôi chấp nhận thanh toán bằng tiền mặt khi nhận hàng (COD), chuyển khoản ngân hàng, và các ví điện tử như MoMo, ZaloPay.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Có giao hàng miễn phí không?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Chúng tôi miễn phí giao hàng cho đơn hàng từ 200.000đ trong bán kính 5km. Các đơn hàng khác có phí ship 30.000đ.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Có thể đặt hàng trước không?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Có, bạn có thể đặt hàng trước tối đa 24 giờ. Vui lòng gọi điện hoặc gửi tin nhắn để chúng tôi sắp xếp.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Pizza có thể tùy chỉnh topping không?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Hoàn toàn có thể! Bạn có thể thêm hoặc bớt topping theo sở thích. Vui lòng ghi chú khi đặt hàng hoặc liên hệ trực tiếp.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Pizza Shop</h3>
+                    <p>Pizza ngon nhất thành phố với hơn 10 năm kinh nghiệm</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Liên Hệ</h3>
+                    <p>📍 123 Đường ABC, Quận 1, TP.HCM</p>
+                    <p>📞 0123 456 789</p>
+                    <p>✉️ info@pizzashop.vn</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Mạng Xã Hội</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pizza Shop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Login/Signup -->
+    <div class="modal-overlay" id="authModal" style="display: none;">
+        <div class="modal-auth">
+            <button class="modal-close-btn" onclick="closeAuthModal()">✖</button>
+            
+            <!-- Login Form -->
+            <div class="auth-form" id="loginForm">
+                <h3 class="auth-title">Đăng Nhập Tài Khoản</h3>
+                <p class="auth-description">Đăng nhập để mua hàng và nhận những ưu đãi đặc biệt</p>
+                <form onsubmit="return handleLogin(event)">
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="text" id="login-phone" placeholder="Nhập số điện thoại" required>
+                        <span class="form-error" id="login-phone-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" id="login-password" placeholder="Nhập mật khẩu" required>
+                        <span class="form-error" id="login-password-error"></span>
+                    </div>
+                    <button type="submit" class="btn-auth">Đăng Nhập</button>
+                </form>
+                <p class="auth-switch">
+                    Bạn chưa có tài khoản? <a href="javascript:;" onclick="showSignupForm()">Đăng ký ngay</a>
+                </p>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="auth-form" id="signupForm" style="display: none;">
+                <h3 class="auth-title">Đăng Ký Tài Khoản</h3>
+                <p class="auth-description">Đăng ký thành viên để mua hàng và nhận ưu đãi đặc biệt</p>
+                <form onsubmit="return handleSignup(event)">
+                    <div class="form-group">
+                        <label>Tên đầy đủ</label>
+                        <input type="text" id="signup-fullname" placeholder="VD: Nguyễn Văn A" required>
+                        <span class="form-error" id="signup-fullname-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="text" id="signup-phone" placeholder="Nhập số điện thoại" required>
+                        <span class="form-error" id="signup-phone-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" id="signup-password" placeholder="Nhập mật khẩu" required>
+                        <span class="form-error" id="signup-password-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Nhập lại mật khẩu</label>
+                        <input type="password" id="signup-password-confirm" placeholder="Nhập lại mật khẩu" required>
+                        <span class="form-error" id="signup-password-confirm-error"></span>
+                    </div>
+                    <div class="form-group-checkbox">
+                        <input type="checkbox" id="signup-agree" required>
+                        <label for="signup-agree">Tôi đồng ý với chính sách và điều khoản</label>
+                    </div>
+                    <button type="submit" class="btn-auth">Đăng Ký</button>
+                </form>
+                <p class="auth-switch">
+                    Bạn đã có tài khoản? <a href="javascript:;" onclick="showLoginForm()">Đăng nhập ngay</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Shop - Chi Tiết Sản Phẩm</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/product-detail.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" class="logo-link"><h1>🍕 Pizza Shop</h1></a>
+                </div>
+                <nav class="nav-menu">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li><a href="menu.html" class="active">Menu</a></li>
+                        <li><a href="cart.html">Giỏ Hàng <span class="cart-count" id="cartCount">0</span></a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li class="user-account">
+                            <a href="javascript:;" id="user-account-link">
+                                <span class="user-icon">👤</span>
+                                <span id="user-account-text">Đăng Nhập</span>
+                            </a>
+                            <ul class="user-dropdown" id="userDropdown" style="display: none;">
+                                <li id="admin-menu-item" style="display: none;">
+                                    <a href="admin.html">⚙️ Quản lý cửa hàng</a>
+                                </li>
+                                <li id="customer-menu-item">
+                                    <a href="customer.html">📋 Đơn hàng của tôi</a>
+                                </li>
+                                <li><a href="javascript:;" id="btn-logout">🚪 Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="search-btn" onclick="toggleSearch()">🔍</button>
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Tìm kiếm pizza..." id="searchInput">
+            <button class="search-close" onclick="toggleSearch()">✕</button>
+        </div>
+    </div>
+
+    <!-- Modal Login/Signup -->
+    <div class="modal-overlay" id="authModal" style="display: none;">
+        <div class="modal-auth">
+            <button class="modal-close-btn" onclick="closeAuthModal()">✖</button>
+            
+            <!-- Login Form -->
+            <div class="auth-form" id="loginForm">
+                <h3 class="auth-title">Đăng Nhập Tài Khoản</h3>
+                <p class="auth-description">Đăng nhập để mua hàng và nhận những ưu đãi đặc biệt</p>
+                <form onsubmit="return handleLogin(event)">
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="text" id="login-phone" placeholder="Nhập số điện thoại" required>
+                        <span class="form-error" id="login-phone-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" id="login-password" placeholder="Nhập mật khẩu" required>
+                        <span class="form-error" id="login-password-error"></span>
+                    </div>
+                    <button type="submit" class="btn-auth">Đăng Nhập</button>
+                </form>
+                <p class="auth-switch">
+                    Bạn chưa có tài khoản? <a href="javascript:;" onclick="showSignupForm()">Đăng ký ngay</a>
+                </p>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="auth-form" id="signupForm" style="display: none;">
+                <h3 class="auth-title">Đăng Ký Tài Khoản</h3>
+                <p class="auth-description">Đăng ký thành viên để mua hàng và nhận ưu đãi đặc biệt</p>
+                <form onsubmit="return handleSignup(event)">
+                    <div class="form-group">
+                        <label>Tên đầy đủ</label>
+                        <input type="text" id="signup-fullname" placeholder="VD: Nguyễn Văn A" required>
+                        <span class="form-error" id="signup-fullname-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="text" id="signup-phone" placeholder="Nhập số điện thoại" required>
+                        <span class="form-error" id="signup-phone-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" id="signup-password" placeholder="Nhập mật khẩu" required>
+                        <span class="form-error" id="signup-password-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Nhập lại mật khẩu</label>
+                        <input type="password" id="signup-password-confirm" placeholder="Nhập lại mật khẩu" required>
+                        <span class="form-error" id="signup-password-confirm-error"></span>
+                    </div>
+                    <div class="form-group-checkbox">
+                        <input type="checkbox" id="signup-agree" required>
+                        <label for="signup-agree">Tôi đồng ý với chính sách và điều khoản</label>
+                    </div>
+                    <button type="submit" class="btn-auth">Đăng Ký</button>
+                </form>
+                <p class="auth-switch">
+                    Bạn đã có tài khoản? <a href="javascript:;" onclick="showLoginForm()">Đăng nhập ngay</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <section class="breadcrumb-section">
+        <div class="container">
+            <nav class="breadcrumb">
+                <a href="index.html">Trang Chủ</a>
+                <span>/</span>
+                <a href="menu.html">Menu</a>
+                <span>/</span>
+                <span id="breadcrumbProductName">Chi Tiết Sản Phẩm</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Product Detail -->
+    <section class="product-detail-section">
+        <div class="container">
+            <div class="product-detail-wrapper" id="productDetailWrapper">
+                <!-- Content will be loaded by JavaScript -->
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Đang tải sản phẩm...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="related-products-section">
+        <div class="container">
+            <h2 class="section-title">Sản Phẩm Liên Quan</h2>
+            <div class="products-grid" id="relatedProducts">
+                <!-- Related products will be loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>🍕 Pizza Shop</h3>
+                    <p>Chúng tôi phục vụ những chiếc pizza ngon nhất với nguyên liệu tươi sạch và công thức truyền thống Ý.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Liên kết nhanh</h4>
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li><a href="menu.html">Menu</a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Giờ mở cửa</h4>
+                    <p>Thứ 2 - Thứ 6: 10:00 - 22:00</p>
+                    <p>Thứ 7 - CN: 09:00 - 23:00</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Liên hệ</h4>
+                    <p>📍 123 Đường Pizza, Quận 1, TP.HCM</p>
+                    <p>📞 (028) 1234 5678</p>
+                    <p>✉️ info@pizzashop.vn</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Pizza Shop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Load product detail
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductDetail();
+            updateCartCount();
+            checkCurrentUser();
+        });
+
+        function loadProductDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id'));
+            
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const product = products.find(p => p.id === productId);
+            
+            if (!product) {
+                document.getElementById('productDetailWrapper').innerHTML = `
+                    <div class="product-not-found">
+                        <h2>Không tìm thấy sản phẩm</h2>
+                        <p>Sản phẩm bạn đang tìm kiếm không tồn tại.</p>
+                        <a href="menu.html" class="btn btn-primary">Quay lại Menu</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Update breadcrumb
+            document.getElementById('breadcrumbProductName').textContent = product.name;
+            document.title = `Pizza Shop - ${product.name}`;
+            
+// Render product detail
+            const wrapper = document.getElementById('productDetailWrapper');
+            wrapper.innerHTML = `
+                <div class="product-gallery">
+                    <div class="main-image">
+                        <img src="${product.image}" alt="${product.name}" id="mainProductImage">
+                    </div>
+                    <div class="image-badge">
+                        <span class="badge-featured">⭐ Phổ biến</span>
+                    </div>
+                </div>
+                <div class="product-detail-info">
+                    <div class="product-header">
+                        <h1 class="product-title">${product.name}</h1>
+                        <div class="product-rating">
+                            <span class="stars">${getStarRating(product.rating || 4.5)}</span>
+                            <span class="rating-value">${product.rating || 4.5}</span>
+                            <span class="review-count">(${product.reviews || 100} đánh giá)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="product-price-section">
+                        <span class="current-price">${formatPrice(product.price)}</span>
+                        <span class="price-note">Giá cơ bản</span>
+                    </div>
+                    
+                    <div class="product-description">
+                        <h3>Mô tả</h3>
+                        <p>${product.fullDescription || product.description}</p>
+                    </div>
+                    
+                    <div class="product-ingredients">
+                        <h3>Thành phần</h3>
+                        <div class="ingredients-list">
+                            ${(product.ingredients || ['Phô mai', 'Sốt cà chua', 'Đế bánh']).map(ing => `<span class="ingredient-tag">${ing}</span>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="product-sizes">
+                        <h3>Chọn kích thước</h3>
+                        <div class="size-options">
+                            ${(product.sizes || [
+                                { name: "Nhỏ (20cm)", price: product.price },
+                                { name: "Vừa (25cm)", price: product.price + 100000 },
+                                { name: "Lớn (30cm)", price: product.price + 200000 }
+                            ]).map((size, index) => `
+                                <label class="size-option ${index === 0 ? 'active' : ''}">
+                                    <input type="radio" name="size" value="${size.price}" ${index === 0 ? 'checked' : ''} onchange="updateSelectedPrice(${size.price})">
+                                    <span class="size-name">${size.name}</span>
+                                    <span class="size-price">${formatPrice(size.price)}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="product-quantity">
+                        <h3>Số lượng</h3>
+                        <div class="quantity-selector">
+                            <button class="qty-btn" onclick="changeQuantity(-1)">−</button>
+                            <input type="number" id="productQuantity" value="1" min="1" max="10">
+                            <button class="qty-btn" onclick="changeQuantity(1)">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="btn btn-primary btn-add-cart" onclick="addToCartFromDetail(${product.id})">
+                            🛒 Thêm vào giỏ hàng
+                        </button>
+                        <button class="btn btn-outline btn-buy-now" onclick="buyNow(${product.id})">
+                            ⚡ Mua ngay
+                        </button>
+                    </div>
+                    
+                    <div class="product-nutrition">
+                        <h3>Thông tin dinh dưỡng (mỗi phần)</h3>
+                        <div class="nutrition-grid">
+                            <div class="nutrition-item">
+                                <span class="nutrition-value">${product.nutrition?.calories || 280}</span>
+                                <span class="nutrition-label">Calories</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-value">${product.nutrition?.protein || 15}g</span>
+                                <span class="nutrition-label">Protein</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-value">${product.nutrition?.carbs || 32}g</span>
+                                <span class="nutrition-label">Carbs</span>
+                            </div>
+                            <div class="nutrition-item">
+                                <span class="nutrition-value">${product.nutrition?.fat || 14}g</span>
+                                <span class="nutrition-label">Chất béo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Load related products
+            loadRelatedProducts(product);
+        }
+
+        function getStarRating(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '⭐';
+            }
+            if (hasHalfStar && fullStars < 5) {
+                stars += '✨';
+            }
+            
+            return stars;
+        }
+
+        function updateSelectedPrice(price) {
+            document.querySelectorAll('.size-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            event.target.closest('.size-option').classList.add('active');
+        }
+
+        function changeQuantity(delta) {
+            const input = document.getElementById('productQuantity');
+            let value = parseInt(input.value) + delta;
+            if (value < 1) value = 1;
+            if (value > 10) value = 10;
+            input.value = value;
+        }
+
+        function addToCartFromDetail(productId) {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const product = products.find(p => p.id === productId);
+            
+            if (!product) return;
+            
+            const quantity = parseInt(document.getElementById('productQuantity').value);
+            const selectedSize = document.querySelector('input[name="size"]:checked');
+            const selectedPrice = selectedSize ? parseInt(selectedSize.value) : product.price;
+            
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Check if product already in cart (same product and price)
+            const existingIndex = cart.findIndex(item => item.id === productId && item.price === selectedPrice);
+            
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += quantity;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: selectedPrice,
+                    image: product.image,
+                    quantity: quantity
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // Show notification
+            showNotification(`Đã thêm ${quantity} ${product.name} vào giỏ hàng!`);
+        }
+
+        function buyNow(productId) {
+            addToCartFromDetail(productId);
+            window.location.href = 'cart.html';
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification-toast';
+            notification.innerHTML = `
+                <span class="notification-icon">✓</span>
+                <span class="notification-message">${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function loadRelatedProducts(currentProduct) {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const related = products
+                .filter(p => p.id !== currentProduct.id && p.category === currentProduct.category)
+                .slice(0, 4);
+            
+            // If not enough related products, add some from other categories
+            if (related.length < 4) {
+                const others = products
+                    .filter(p => p.id !== currentProduct.id && p.category !== currentProduct.category)
+                    .slice(0, 4 - related.length);
+                related.push(...others);
+            }
+            
+            const container = document.getElementById('relatedProducts');
+            container.innerHTML = related.map(product => `
+                <div class="product-card">
+                    <a href="product-detail.html?id=${product.id}">
+                        <img src="${product.image}" alt="${product.name}">
+                    </a>
+                    <div class="product-info">
+                        <h3><a href="product-detail.html?id=${product.id}">${product.name}</a></h3>
+                        <p>${product.description}</p>
+                        <div class="product-footer">
+                            <span class="price">${formatPrice(product.price)}</span>
+                            <button class="btn btn-primary" onclick="addToCart(${product.id})">Thêm</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

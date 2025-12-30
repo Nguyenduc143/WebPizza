@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Shop - Trang Khách Hàng</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/customer.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" class="logo-link"><h1>🍕 Pizza Shop</h1></a>
+                </div>
+                <nav class="nav-menu">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li><a href="menu.html">Menu</a></li>
+                        <li><a href="cart.html">Giỏ Hàng <span class="cart-count" id="cartCount">0</span></a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li class="user-account">
+                            <a href="javascript:;" id="user-account-link">
+                                <span class="user-icon">👤</span>
+                                <span id="user-account-text">Đăng Nhập</span>
+                            </a>
+                            <ul class="user-dropdown" id="userDropdown" style="display: none;">
+                                <li id="admin-menu-item" style="display: none;">
+                                    <a href="admin.html">⚙️ Quản lý cửa hàng</a>
+                                </li>
+                                <li id="customer-menu-item">
+                                    <a href="customer.html">📋 Đơn hàng của tôi</a>
+                                </li>
+                                <li><a href="javascript:;" id="btn-logout">🚪 Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <div class="search-box" id="searchBox">
+                        <input type="text" id="searchInput" placeholder="Tìm kiếm pizza..." onkeyup="handleSearch(event)">
+                        <button onclick="performSearch()">Tìm</button>
+                    </div>
+                    <button class="search-btn" onclick="toggleSearch()">🔍</button>
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Customer Dashboard Section -->
+    <section class="customer-section">
+        <div class="container">
+            <div class="customer-dashboard" id="customerDashboard">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Xin chào, <span id="customerName">Khách hàng</span>! 👋</h1>
+                        <p>Chào mừng bạn đến với Pizza Shop</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="handleCustomerLogout()">Đăng Xuất</button>
+                </div>
+
+                <!-- Customer Info -->
+                <div class="customer-info-section">
+                    <div class="info-card">
+                        <h2>Thông Tin Cá Nhân</h2>
+                        <div class="info-content">
+                            <div class="info-row">
+                                <span class="info-label">Tên đăng nhập:</span>
+                                <span class="info-value" id="displayUsername">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Tên đầy đủ:</span>
+                                <span class="info-value" id="displayFullname">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Email:</span>
+                                <span class="info-value" id="displayEmail">Chưa cập nhật</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Số điện thoại:</span>
+                                <span class="info-value" id="displayPhone">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Địa chỉ:</span>
+                                <span class="info-value" id="displayAddress">Chưa cập nhật</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 1rem;" onclick="openUpdateInfoModal()">Cập nhật thông tin</button>
+                    </div>
+
+                    <div class="info-card">
+                        <h2>Thống Kê</h2>
+                        <div class="customer-stats">
+                            <div class="stat-item">
+                                <div class="stat-icon">📦</div>
+                                <div class="stat-info">
+                                    <h3 id="statOrderCount">0</h3>
+                                    <p>Đơn hàng</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">💰</div>
+                                <div class="stat-info">
+                                    <h3 id="statTotalSpent">0đ</h3>
+                                    <p>Tổng chi tiêu</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">⭐</div>
+                                <div class="stat-info">
+                                    <h3 id="statPoints">0</h3>
+                                    <p>Điểm tích lũy</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order History -->
+                <div class="dashboard-section">
+                    <h2>Lịch Sử Đơn Hàng</h2>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Mã ĐH</th>
+                                <th>Ngày đặt</th>
+                                <th>Sản phẩm</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customerOrdersBody">
+                            <!-- Orders will be loaded dynamically -->
+                        </tbody>
+                    </table>
+                    <p id="noOrdersMessage" style="display: none; text-align: center; color: #666; padding: 20px;">Bạn chưa có đơn hàng nào.</p>
+                </div>
+
+                <!-- Favorite Products -->
+                <div class="dashboard-section">
+                    <h2>Sản Phẩm Gợi Ý</h2>
+                    <div class="favorite-products" id="favoriteProductsContainer">
+                        <!-- Products will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Pizza Shop</h3>
+                    <p>Pizza ngon nhất thành phố với hơn 10 năm kinh nghiệm</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Liên Hệ</h3>
+                    <p>📍 123 Đường ABC, Quận 1, TP.HCM</p>
+                    <p>📞 0123 456 789</p>
+                    <p>✉️ info@pizzashop.vn</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Mạng Xã Hội</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pizza Shop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Login/Signup -->
+    <div class="modal-overlay" id="authModal" style="display: none;">
+        <div class="modal-auth">
+            <button class="modal-close-btn" onclick="closeAuthModal()">✖</button>
+            
+            <!-- Login Form -->
+            <div class="auth-form" id="loginForm">
+                <h3 class="auth-title">Đăng Nhập Tài Khoản</h3>
+                <p class="auth-description">Đăng nhập để mua hàng và nhận những ưu đãi đặc biệt</p>
+                <form onsubmit="return handleLogin(event)">
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="text" id="login-phone" placeholder="Nhập số điện thoại" required>
+                        <span class="form-error" id="login-phone-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" id="login-password" placeholder="Nhập mật khẩu" required>
+                        <span class="form-error" id="login-password-error"></span>
+                    </div>
+                    <button type="submit" class="btn-auth">Đăng Nhập</button>
+                </form>
+                <p class="auth-switch">
+                    Bạn chưa có tài khoản? <a href="javascript:;" onclick="showSignupForm()">Đăng ký ngay</a>
+                </p>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="auth-form" id="signupForm" style="display: none;">
+                <h3 class="auth-title">Đăng Ký Tài Khoản</h3>
+                <p class="auth-description">Đăng ký thành viên để mua hàng và nhận ưu đãi đặc biệt</p>
+                <form onsubmit="return handleSignup(event)">
+                    <div class="form-group">
+                        <label>Tên đầy đủ</label>
+                        <input type="text" id="signup-fullname" placeholder="VD: Nguyễn Văn A" required>
+                        <span class="form-error" id="signup-fullname-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="text" id="signup-phone" placeholder="Nhập số điện thoại" required>
+                        <span class="form-error" id="signup-phone-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" id="signup-password" placeholder="Nhập mật khẩu" required>
+                        <span class="form-error" id="signup-password-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Nhập lại mật khẩu</label>
+                        <input type="password" id="signup-password-confirm" placeholder="Nhập lại mật khẩu" required>
+                        <span class="form-error" id="signup-password-confirm-error"></span>
+                    </div>
+                    <div class="form-group-checkbox">
+                        <input type="checkbox" id="signup-agree" required>
+                        <label for="signup-agree">Tôi đồng ý với chính sách và điều khoản</label>
+                    </div>
+                    <button type="submit" class="btn-auth">Đăng Ký</button>
+                </form>
+                <p class="auth-switch">
+                    Bạn đã có tài khoản? <a href="javascript:;" onclick="showLoginForm()">Đăng nhập ngay</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div class="modal-overlay" id="orderDetailModal" style="display: none;">
+        <div class="modal-order-detail">
+            <div class="modal-header">
+                <h2>📦 Chi Tiết Đơn Hàng</h2>
+                <button class="modal-close-btn" onclick="closeOrderDetailModal()">✖</button>
+            </div>
+            <div class="modal-body" id="orderDetailContent">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Info Modal -->
+    <div class="modal-overlay" id="updateInfoModal" style="display: none;">
+        <div class="modal-order-detail">
+            <div class="modal-header">
+                <h2>✏️ Cập Nhật Thông Tin</h2>
+                <button class="modal-close-btn" onclick="closeUpdateInfoModal()">✖</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="return handleUpdateInfo(event)">
+                    <div class="form-group">
+                        <label>Tên đầy đủ <span style="color: red;">*</span></label>
+                        <input type="text" id="update-fullname" required placeholder="Nhập tên đầy đủ">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="update-email" placeholder="Nhập email">
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ <span style="color: red;">*</span></label>
+                        <textarea id="update-address" required rows="3" placeholder="Nhập địa chỉ đầy đủ"></textarea>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">💾 Lưu thay đổi</button>
+                        <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="closeUpdateInfoModal()">❌ Hủy</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
